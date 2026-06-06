@@ -78,7 +78,7 @@ const Dashboard = () => {
     const handleDeleteTask = async (taskId) => {
         if (window.confirm('Are you sure you want to delete this task?')) {
             try {
-                
+
                 await API.delete(`/tasks/${taskId}`);
                 fetchTasks();
                 alert('Task deleted successfully!');
@@ -90,6 +90,7 @@ const Dashboard = () => {
 
     const getPriorityColor = (priority) => {
         switch(priority) {
+            
             case 'high': return '#dc3545';
             case 'medium': return '#ffc107';
             case 'low': return '#28a745';
