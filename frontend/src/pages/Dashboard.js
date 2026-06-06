@@ -115,11 +115,12 @@ const Dashboard = () => {
                         {showForm ? 'Cancel' : '+ Add New Task'}
                     </button>
                 )}
-                
+
             </div>
 
             {isManager && showForm && (
                 <div style={styles.formContainer}>
+                    
                     <h3>Create New Task</h3>
                     <form onSubmit={handleCreateTask}>
                         <input
