@@ -99,7 +99,7 @@ const Dashboard = () => {
     };
 
     if (loading) {
-        
+
         return <div style={styles.loading}>Loading tasks...</div>;
     }
 
@@ -115,6 +115,7 @@ const Dashboard = () => {
                         {showForm ? 'Cancel' : '+ Add New Task'}
                     </button>
                 )}
+                
             </div>
 
             {isManager && showForm && (
