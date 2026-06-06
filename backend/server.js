@@ -5,6 +5,7 @@ const db = require('./config/db');
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
+const taskRoutes = require('./routes/taskRoutes');
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api', taskRoutes);  // This means taskRoutes handles /api/* routes
 
 // Test database route
 app.get('/test-db', (req, res) => {
@@ -35,5 +37,4 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    console.log(`Register API: http://localhost:${PORT}/api/auth/register`);
 });

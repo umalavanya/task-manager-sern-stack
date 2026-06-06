@@ -1,5 +1,6 @@
 const db = require('../config/db');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // Register new user
 const register = async (req, res) => {
@@ -28,7 +29,7 @@ const register = async (req, res) => {
             
             // Insert new user
             const insertQuery = 'INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)';
-            const userRole = role || 'employee'; // Default role is employee
+            const userRole = role || 'employee';
             
             db.query(insertQuery, [username, email, hashedPassword, userRole], (err, result) => {
                 if (err) {
@@ -49,4 +50,58 @@ const register = async (req, res) => {
     }
 };
 
-module.exports = { register };
+// Login user
+const login = (req, res) => {
+    const { email, password } = req.body;
+    
+    // Validate input
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Please provide email and password' });
+    }
+    
+    // Check if user exists
+    const query = 'SELECT * FROM users WHERE email = ?';
+    db.query(query, [email], async (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error', error: err });
+        }
+        
+        if (results.length === 0) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+        
+        const user = results[0];
+        
+        // Check password
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+        
+        // Create JWT token
+        const token = jwt.sign(
+            { 
+                id: user.id, 
+                username: user.username, 
+                email: user.email, 
+                role: user.role 
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: '24h' }
+        );
+        
+        // Return user info and token
+        res.json({
+            message: 'Login successful',
+            token: token,
+            user: {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                role: user.role
+            }
+        });
+    });
+};
+
+module.exports = { register, login };
