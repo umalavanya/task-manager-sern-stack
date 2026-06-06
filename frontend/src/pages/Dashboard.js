@@ -78,6 +78,7 @@ const Dashboard = () => {
     const handleDeleteTask = async (taskId) => {
         if (window.confirm('Are you sure you want to delete this task?')) {
             try {
+                
                 await API.delete(`/tasks/${taskId}`);
                 fetchTasks();
                 alert('Task deleted successfully!');
