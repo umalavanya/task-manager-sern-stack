@@ -23,7 +23,7 @@ const Dashboard = () => {
         if (isManager) {
             fetchUsers();
         }
-    }, []);
+    }, [] );
 
     const fetchTasks = async () => {
         try {
