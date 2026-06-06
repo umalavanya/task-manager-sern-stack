@@ -90,7 +90,7 @@ const Dashboard = () => {
 
     const getPriorityColor = (priority) => {
         switch(priority) {
-            
+
             case 'high': return '#dc3545';
             case 'medium': return '#ffc107';
             case 'low': return '#28a745';
@@ -99,6 +99,7 @@ const Dashboard = () => {
     };
 
     if (loading) {
+        
         return <div style={styles.loading}>Loading tasks...</div>;
     }
 
